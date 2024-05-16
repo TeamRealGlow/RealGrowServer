@@ -22,7 +22,6 @@ class HelloWorld(Resource):
         return {"image_path": parsingimage_path}
 
 if __name__ == '__main__':
-    # debug를 True로 세팅하면, 해당 서버 세팅 후에 코드가 바뀌어도 문제없이 실행됨.
     parser = Parser(os.path.join("best_model", "examplemodel.pth"))
     app.run(host='0.0.0.0', port=8000, debug = True)
 
