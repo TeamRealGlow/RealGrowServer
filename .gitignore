@@ -4,3 +4,6 @@
 /res
 /img
 /pre_train/best_model/examplemodel.pth
+server/static/pic/*
+server/static/grayScale/*
+server/.idea
