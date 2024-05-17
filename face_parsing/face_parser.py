@@ -7,6 +7,7 @@ import numpy as np
 class Parser():
     def __init__(self,cp):
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        # self.device = torch.device("cpu")
         """
         :param cp:
         input model path
