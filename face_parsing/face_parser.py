@@ -12,7 +12,7 @@ class Parser():
         input model path
         """
         self.model = BiSeNet(n_classes=9)
-        save_pth = osp.join('..','pre_train', cp)
+        save_pth = cp
         self.model.load_state_dict(torch.load(save_pth))
         self.model = self.model.to(self.device)
         self.model.eval()
