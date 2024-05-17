@@ -11,6 +11,7 @@ from PIL import Image
 app = Flask(__name__)
 api = Api(app)
 
+
 @api.route('/parsing')
 class HelloWorld(Resource):
     def post(self):
@@ -19,6 +20,9 @@ class HelloWorld(Resource):
         img = base64.b64decode(img)
         img = Image.open(BytesIO(img))
         parsing = parser.out_parsing(img)
+        byte_img = BytesIO()
+        parsing.save(byte_img,format="PNG")
+        parsing = byte_img.getvalue()
         b64_string = base64.b64encode(parsing).decode('utf-8')
         return {"PNGImage": b64_string}
 

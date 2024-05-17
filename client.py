@@ -1,3 +1,4 @@
+import numpy as np
 import requests
 import base64
 import cv2
@@ -17,8 +18,13 @@ files = {
         }
 
 r = requests.post("http://192.168.24.185:8000/parsing", json=files)
+
+print(r)
 img = r.json()["PNGImage"]
 img = base64.b64decode(img)
 img = BytesIO(img)
+img = Image.open(img)
 plt.imshow(img)
 plt.show()
+np_img = np.array(img)
+print(np_img.shape)

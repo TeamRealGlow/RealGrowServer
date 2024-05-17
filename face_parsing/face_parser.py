@@ -16,12 +16,13 @@ class Parser():
         self.model.load_state_dict(torch.load(save_pth))
         self.model = self.model.to(self.device)
         self.model.eval()
-    def _preprocessing(self,imgPath):
+        print("Parser activate")
+    def _preprocessing(self,img):
         to_tensor = transforms.Compose([
             transforms.ToTensor(),
             transforms.Normalize((0.485, 0.456, 0.406), (0.229, 0.224, 0.225)),
         ])
-        img = Image.open(imgPath).convert("RGB")
+        img = img.convert("RGB")
         w, h = (img.width, img.height)
         image = img.resize((512, 512), Image.BILINEAR)
         image = to_tensor(image)
@@ -36,8 +37,8 @@ class Parser():
             parsingimage = parsingimage.resize((w, h))
             return parsingimage
 
-    def out_parsing(self, imgPath):
-        image, w, h = self._preprocessing(imgPath)
+    def out_parsing(self, img):
+        image, w, h = self._preprocessing(img)
         parsing = self._make_face_seg(image, w, h)
         return parsing
 
