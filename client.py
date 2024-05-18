@@ -1,4 +1,8 @@
-def imgRequestTest():
+import os
+
+from dotenv import load_dotenv
+
+def imgRequestTest(HOST_SERVER):
     import numpy as np
     import requests
     import base64
@@ -7,6 +11,7 @@ def imgRequestTest():
     from PIL import Image
     import matplotlib.pyplot as plt
     from io import BytesIO
+
 
     image_name = os.path.join("ex","oh.png")
     with open(image_name, 'rb') as f:
@@ -18,7 +23,7 @@ def imgRequestTest():
                 "img": b64_string,
             }
 
-    r = requests.post("http://192.168.24.185:8000/parsing", json=files)
+    r = requests.post(f"{HOST_SERVER}/parsing", json=files)
 
     print(r)
     img = r.json()["PNGImage"]
@@ -30,18 +35,20 @@ def imgRequestTest():
     np_img = np.array(img)
     print(np_img.shape)
 
-def ItemGetTest():
+def ItemGetTest(HOST_SERVER):
     import requests
     import base64
     import os
-    r = requests.get("http://192.168.24.185:8000/loadItem/hairItem1")
+    r = requests.get(f"{HOST_SERVER}/loadItem/hairItem1")
     b = r.json()
     print(b)
 
 
 if __name__ == "__main__":
+    load_dotenv()
+    HOST_SERVER = os.getenv("HOST_SERVER")
     choice = 2
     if choice == 1:
-        imgRequestTest()
+        imgRequestTest(HOST_SERVER)
     elif choice == 2:
-        ItemGetTest()
+        ItemGetTest(HOST_SERVER)

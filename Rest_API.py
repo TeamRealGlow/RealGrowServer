@@ -7,6 +7,7 @@ from flask import abort
 import base64
 from io import BytesIO
 from PIL import Image
+from dotenv import load_dotenv
 
 app = Flask(__name__)
 api = Api(app)
@@ -41,13 +42,13 @@ class LoadItem(Resource):
             with open(Jsonpath,'r',encoding="utf-8") as file:
                 json_data = json.load(file)
                 body = {"Category": Item,"Itemlen": len(json_data["row"]),"row":json_data["row"]}
-                print(body)
                 return body
         except FileNotFoundError:
             abort(400,f"{Item} is not found")
 
 if __name__ == '__main__':
-    # debug를 True로 세팅하면, 해당 서버 세팅 후에 코드가 바뀌어도 문제없이 실행됨.
+    load_dotenv()
+    PORT = os.getenv('PORT')
     parser = Parser(os.path.join("best_model", "examplemodel.pth"))
-    app.run(host='0.0.0.0', port=8000, debug = True)
+    app.run(host='0.0.0.0', port=PORT)
 
