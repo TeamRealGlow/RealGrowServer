@@ -35,7 +35,7 @@ class Parser():
             y_pred = self.model(image)[0]
             parsing = y_pred.squeeze(0).cpu().numpy().argmax(0)
             parsingimage = Image.fromarray((parsing).astype(np.uint8))
-            parsingimage = parsingimage.resize((w, h))
+            parsingimage = parsingimage.resize((w, h),Image.NEAREST)
             return parsingimage
 
     def out_parsing(self, img):
@@ -45,7 +45,15 @@ class Parser():
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    a = Parser(osp.join("best_model","examplemodel.pth"))
-    parsing = a.out_parsing(osp.join("..","example","65.jpg"))
+    import requests
+    from io import BytesIO
+    a = Parser(osp.join("..","best_model","examplemodel.pth"))
+    img = requests.get("https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcTmi89YSignGumXvvD2zPRevLiB_GUHG18_76BuugGHkM85DDNZn1rWlx9uKr2w3dUH")
+    img = img.content
+    img = BytesIO(img)
+    img = Image.open(img)
+    parsing = a.out_parsing(img)
+    parsing_array = np.array(parsing)
+    print(parsing_array.max())
     plt.imshow(parsing)
     plt.show()

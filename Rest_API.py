@@ -8,6 +8,7 @@ import base64
 from io import BytesIO
 from PIL import Image
 from dotenv import load_dotenv
+import numpy as np
 
 app = Flask(__name__)
 api = Api(app)
@@ -22,10 +23,14 @@ class Parsing(Resource):
             img = base64.b64decode(img)
             img = Image.open(BytesIO(img))
             parsing = parser.out_parsing(img)
-            byte_img = BytesIO()
-            parsing.save(byte_img,format="PNG")
-            parsing = byte_img.getvalue()
-            b64_string = base64.b64encode(parsing).decode('utf-8')
+            bytes_io = BytesIO()
+            parsing.save(bytes_io,format="PNG")
+            b64_string = base64.b64encode(bytes_io.getvalue()).decode('utf-8')
+            # tempparsing = base64.b64decode(b64_string)
+            # tempimg = BytesIO(tempparsing)
+            # tempimg = Image.open(tempimg)
+            # tempnp = np.array(tempimg)
+            # print(tempnp.max())
             return {"PNGImage": b64_string}
         except Exception as e:
             print(e)
@@ -48,7 +53,9 @@ class LoadItem(Resource):
 
 if __name__ == '__main__':
     load_dotenv()
+    import requests
+    img = requests.get("https://t1.gstatic.com/licensed-image?q=tbn:ANd9GcTmi89YSignGumXvvD2zPRevLiB_GUHG18_76BuugGHkM85DDNZn1rWlx9uKr2w3dUH")
     PORT = os.getenv('PORT')
     parser = Parser(os.path.join("best_model", "examplemodel.pth"))
-    app.run(host='0.0.0.0', port=PORT)
+    app.run(host='0.0.0.0', port=PORT,debug=True)
 
