@@ -1,6 +1,8 @@
 import os.path
 import json
-from flask import Flask,request
+
+import cv2
+from flask import Flask,request,session
 from flask_restx import Api, Resource
 from face_parsing.face_parser import Parser
 from flask import abort
@@ -10,6 +12,8 @@ from PIL import Image
 from dotenv import load_dotenv
 import logging
 import os
+from makeup.makeupclass import MakeUpEngine
+
 
 app = Flask(__name__)
 api = Api(app)
@@ -62,6 +66,47 @@ class LoadItem(Resource):
         except FileNotFoundError:
             app.logger.error(f'[{request.method}] :: [{request.remote_addr}] :: {FileNotFoundError}')
             abort(400,f"{Item} is not found")
+
+@api.route("/makeup")
+class MakeUp(Resource):
+    def post(self):
+        app.logger.info(f'[{request.method}] :: [{request.remote_addr}] :: {request.path}')
+        json_data = request.get_json()
+        img = json_data['img']
+        parsing = json_data['parsing']
+
+
+        skin_color = tuple(json_data["skin_color"][0])
+        hair_color = tuple(json_data["hair_color"][0])
+        lip_color = tuple(json_data["lip_color"][0])
+
+        skin_alpha = json_data["skin_color"][1]
+        hair_alpha = json_data["hair_color"][1]
+        lip_alpha = json_data["lip_color"][1]
+
+        img = base64.b64decode(img)
+        img = Image.open(BytesIO(img))
+
+        makeup = MakeUpEngine()
+
+        makeup.faceParsing_img(parsing)
+
+        makeup.org_img = img
+
+        makeup.makeup_skin(skin_color)
+        makeup.makeup_hair(hair_color)
+        makeup.makeup_lip(lip_color)
+
+        changeimg = makeup.alladdImg(hair_alpha, skin_alpha, lip_alpha)
+        bytes_io = BytesIO()
+        changeimg = Image.fromarray(changeimg)
+        changeimg.save(bytes_io,format="PNG")
+        b64_string = base64.b64encode(bytes_io.getvalue()).decode('utf-8')
+
+        return {"changeImg":b64_string}
+
+
+
 
 if __name__ == '__main__':
     if not os.path.isdir('logs'):
