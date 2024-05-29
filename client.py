@@ -71,12 +71,46 @@ def ItemGetTest(HOST_SERVER):
     b = r.json()
     print(b)
 
+def PostImg():
+    import requests
+    import base64
+    import matplotlib.pyplot as plt
+    from io import BytesIO
+    from PIL import Image
+    img = requests.get(
+        "https://pds.joongang.co.kr/news/component/htmlphoto_mmdata/202306/04/138bdfca-3e86-4c09-9632-d22df52a0484.jpg")
+    b64_string = base64.b64encode(img.content).decode('utf-8')
+    files = {
+        "img": b64_string,
+    }
+    r = requests.post(f"{HOST_SERVER}/parsing", json=files)
+    # r = requests.post(f"http://192.168.24.187:5000/parsing", json=files)
+    print(r)
+    parsingImg = r.json()["PNGImage"]
+
+    postmake = {
+        "img" : b64_string,
+        "parsing" : parsingImg,
+        "skin_color":[[177, 206, 251],0],
+        "hair_color":[[255, 0, 0],0],
+        "lip_color":[[213, 12, 112],0]
+    }
+
+    r = requests.post(f"{HOST_SERVER}/makeup",json=postmake)
+    changeImg = r.json()["changeImg"]
+    changeImg = base64.b64decode(changeImg)
+    changeImg = BytesIO(changeImg)
+    changeImg = Image.open(changeImg)
+    plt.imshow(changeImg)
+    plt.show()
+
+
 
 if __name__ == "__main__":
     load_dotenv()
     HOST_SERVER = os.getenv("HOST_SERVER")
     commond = {"단일 이미지 전송":1,"아이템 불러오기":2, "멀티 이미지 전송":3}
-    choice = 2
+    choice = 4
     if choice == 1:
         imgRequestTest(HOST_SERVER=HOST_SERVER)
     elif choice == 2:
@@ -89,5 +123,6 @@ if __name__ == "__main__":
             item.start()
         for item in workList:
             item.join()
-
+    elif choice == 4:
+        PostImg()
 
