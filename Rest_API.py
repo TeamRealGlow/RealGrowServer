@@ -56,12 +56,16 @@ class Parsing(Resource):
 class LoadItem(Resource):
     def get(self,Item):
         rootpath =os.path.join("static","ItemDir")
-        Jsonpath =os.path.join(rootpath,Item+".json")
+        Jsonpath =os.path.join(rootpath,"item.json")
         try:
             app.logger.info(f'[{request.method}] {request.path}')
             with open(Jsonpath,'r',encoding="utf-8") as file:
                 json_data = json.load(file)
-                body = {"Category": Item,"Itemlen": len(json_data["row"]),"row":json_data["row"]}
+                body = {
+                    "Category": Item,
+                    "Itemlen": len(json_data[Item]),
+                    "row":json_data[Item]
+                }
                 return body
         except FileNotFoundError:
             app.logger.error(f'[{request.method}] :: [{request.remote_addr}] :: {FileNotFoundError}')
@@ -98,6 +102,7 @@ class MakeUp(Resource):
         makeup.makeup_lip(lip_color)
 
         changeimg = makeup.alladdImg(hair_alpha, skin_alpha, lip_alpha)
+        changeimg = cv2.cvtColor(changeimg,cv2.COLOR_BGR2RGB)
         bytes_io = BytesIO()
         changeimg = Image.fromarray(changeimg)
         changeimg.save(bytes_io,format="PNG")

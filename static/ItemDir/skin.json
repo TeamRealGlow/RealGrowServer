@@ -1,0 +1,19 @@
+{
+  "skin":[
+    {
+      "itemName": "파데 1",
+      "Color": ["#FFCC66","#FF9945"],
+      "ColorName": ["빛주황","선명한주황색"],
+      "Company": "test 회사",
+      "Link": "https://test.com"
+    },
+    {
+      "itemName": "파데 2",
+      "Color": ["#FFCC66","#FF9945"],
+      "ColorName": ["빛주황2","선명한주황색2"],
+      "Company": "test 회사",
+      "Link": "https://test.com"
+    }
+
+  ]
+}

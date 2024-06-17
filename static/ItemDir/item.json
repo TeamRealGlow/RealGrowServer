@@ -1,0 +1,59 @@
+{
+  "skin":[
+    {
+      "itemName": "파데 1",
+      "Color": ["#FFCC66","#FF9945"],
+      "ColorName": ["빛주황","선명한주황색"],
+      "Company": "test 회사",
+      "Link": "https://test.com"
+    },
+    {
+      "itemName": "파데 2",
+      "Color": ["#FFCC66","#FF9945"],
+      "ColorName": ["빛주황2","선명한주황색2"],
+      "Company": "test 회사",
+      "Link": "https://test.com"
+    }
+
+  ],
+  "hair":[
+    {
+      "itemName": "염색 테스트템1",
+      "Color": ["#291C13","#000000"],
+      "ColorName": ["다크브라운","다크"],
+      "Company": "test 회사",
+      "Link": "https://test.com"
+    },
+    {
+      "itemName": "염색 테스트템2",
+      "Color": ["#010C30","#0047AB"],
+      "ColorName": ["코발트","선명한파란색"],
+      "Company": "test 회사",
+      "Link": "https://test2.com"
+    }
+  ]  ,
+  "lip":[
+    {
+      "itemName": "립스틱 1",
+      "Color": ["#FF0000","#FF8A8A","#FF8A8A","#FF8A8A","#FF8A8A","#FF8A8A","#FF8A8A"],
+      "ColorName": ["빨강","빛빨강","빛빨강","빛빨강","빛빨강","빛빨강","빛빨강"],
+      "Company": "test 회사",
+      "Link": "https://test.com"
+    },
+    {
+      "itemName": "립스틱 2",
+      "Color": ["#FF2400","DC143C"],
+      "ColorName": ["생생한 빨강","심홍색"],
+      "Company": "test 회사",
+      "Link": "https://test2.com"
+    },
+    {
+      "itemName": "립스틱 3",
+      "Color": ["#FF2400","DC143C"],
+      "ColorName": ["생생한 빨강","심홍색"],
+      "Company": "test 회사",
+      "Link": "https://test2.com"
+    }
+  ]
+
+}
